@@ -4,6 +4,9 @@
 package excercises.implementation;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * @author chiljagossow
@@ -11,6 +14,17 @@ import java.util.ArrayList;
  */
 public class StringTasks {
 
+  /**
+   * @param args
+   */
+  public static void main(String[] args) {
+    String s = "abccacbddad";
+    int x = getLength(s);
+    System.out.println(x);
+    x = findMaxSequence(s,2);
+    System.out.println(x);
+  }
+  
   public static Boolean checkAnagram(char[] s1, char[] s2) {
     if ((s1 == null) || (s2 == null) || (s1.length != s2.length)) {
       return Boolean.FALSE;
@@ -26,17 +40,6 @@ public class StringTasks {
       return Boolean.FALSE;
     }
     return Boolean.TRUE;
-  }
-
-  /**
-   * @param args
-   */
-  public static void main(String[] args) {
-    StringTasks st = new StringTasks();
-    ArrayList<StringBuilder> permuts = st.permutations("abc");
-    for(StringBuilder sb: permuts){
-      System.out.println(sb);
-    }
   }
   
   public ArrayList<StringBuilder> permutations(String s) {
@@ -100,6 +103,46 @@ public class StringTasks {
     if ( max < length) {
       max = length;
     }
+    return max;
+  }
+  
+  static int findMaxSequence(String s, int n) {
+    // error checking   
+
+    int max = 0;
+    int length = 0;
+    Map<Character, Integer> map = new HashMap<Character, Integer>();
+    LinkedList<Character> lastSeen = new LinkedList<Character>();
+   
+    for (int i = 0; i < s.length(); i++) {
+      Character c = s.charAt(i);
+
+      // c is in current set
+      if ( map.containsKey(c)|| map.size() < n) {
+
+        lastSeen.remove(c);
+        lastSeen.addFirst(c);
+       
+        map.put(c, i);
+        
+        length++;
+      
+      } else {
+      
+      // char is not in current set
+      if (max < length) max = length;
+      
+      char least = lastSeen.pollLast();
+      lastSeen.addFirst(c); 
+      
+      int leastIndex = map.remove(least);      
+      map.put(c, i);
+        
+      length = i - leastIndex;
+      }
+    }
+    
+    if (max < length) max = length;
     return max;
   }
 

@@ -13,13 +13,9 @@ public class BitManipulation {
    * @param args
    */
   public static void main(String[] args) {
-    byte[] screen = new byte[9];
-    int width = 24;
-    BitManipulation bm = new BitManipulation();
-    bm.printScreen(screen, width);
-    bm.drawHorizontalLine(screen, width, 6, 7, 1);
-    bm.printScreen(screen, width);
-  
+    double d = (9.0/16.0);
+    printBinary(d);
+
   }
   
   // 5.2

@@ -3,7 +3,10 @@
  */
 package excercises.implementation;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author chiljagossow
@@ -15,9 +18,40 @@ public class Sorting {
    * @param args
    */
   public static void main(String[] args) {
-    int[] array = { 2,3,1,4,0 };
-    quickSort(array);
+    String[] array = { "abc", "cda", "bca", "cad", "edc"};
+    array = sort(array);
     System.out.println(Arrays.toString(array));
+  }
+  
+  // 11.2
+  static String[] sort(String[] array){
+    // error checking
+    if(array == null) return null;
+    HashMap<String, ArrayList<String>> buckets = new HashMap<String, ArrayList<String>>();
+    for (int i = 0; i < array.length; i++) {
+      String key = sort(array[i]);
+      if (!buckets.containsKey(key)) {
+        ArrayList<String> list = new ArrayList<String>();
+        buckets.put(key, list);
+      }           
+      ArrayList<String> list = buckets.get(key);
+      list.add(array[i]);      
+    }
+    String[] sorted = new String[array.length];
+    int i = 0;
+    for (Map.Entry<String,ArrayList<String>> entry: buckets.entrySet()) {
+      for (String s: entry.getValue()) {
+        sorted[i] = s;
+        i++;
+      }
+    }
+    return sorted;
+  }
+
+  static String sort(String s) {
+    char[] chars = s.toCharArray();
+    Arrays.sort(chars);
+    return new String(chars);
   }
 
   static int binarySearch(int[] array, int item, int start, int end) {
